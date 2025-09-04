@@ -44,6 +44,7 @@
     .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #34495e; }
     .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .form-group textarea { height: 100px; resize: vertical; }
+    .form-group small { color: #666; display: block; margin-top: 5px; }
     
     /* Lista de Cursos */
     .course-list { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -67,6 +68,12 @@
     /* Form de Edição */
     .edit-form { display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px; }
     
+    /* Mensagem quando não há cursos */
+    .no-courses { text-align: center; padding: 40px; background: #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    
+    /* Informações de Comissão */
+    .commission-info { background: #e8f4fc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3498db; }
+    
     /* Responsividade */
     @media (max-width: 768px) {
       .dashboard { flex-direction: column; }
@@ -85,7 +92,7 @@
       <aside class="sidebar">
         <h2>Painel do Instrutor</h2>
         <ul>
-          <li><a href="index.html"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
+          <li><a href="https://kzin82666-hub.github.io/Dev/"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
           <li><a href="#" class="active" data-section="main-dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
           <li><a href="#" data-section="courses-section"><i class="fa-solid fa-book"></i> Meus Cursos</a></li>
           <li><a href="#" data-section="stats-section"><i class="fa-solid fa-chart-line"></i> Estatísticas</a></li>
@@ -101,6 +108,12 @@
           <p>Visão geral da sua performance na plataforma</p>
         </header>
 
+        <div class="commission-info">
+          <h3><i class="fas fa-info-circle"></i> Informações de Comissão</h3>
+          <p>A cada venda, é cobrada uma taxa de R$ 30,00 para a plataforma. O valor restante é destinado a você.</p>
+          <p><strong>PIX para pagamentos: 10422308110</strong></p>
+        </div>
+
         <div class="cards">
           <div class="card">
             <h3>Total de Cursos</h3>
@@ -115,8 +128,8 @@
             <p id="total-revenue">R$ 0,00</p>
           </div>
           <div class="card">
-            <h3>Avaliação Média</h3>
-            <p id="average-rating">0.0</p>
+            <h3>Sua Receita</h3>
+            <p id="instructor-revenue">R$ 0,00</p>
           </div>
         </div>
 
@@ -128,11 +141,13 @@
                 <th>Curso</th>
                 <th>Alunos</th>
                 <th>Faturamento</th>
-                <th>Avaliação</th>
+                <th>Sua Receita</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Preenchido via JavaScript -->
+              <tr>
+                <td colspan="4" style="text-align: center;">Nenhum curso disponível</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -146,7 +161,7 @@
       <aside class="sidebar">
         <h2>Painel do Instrutor</h2>
         <ul>
-          <li><a href="index.html"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
+          <li><a href="https://kzin82666-hub.github.io/Dev/"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
           <li><a href="#" data-section="main-dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
           <li><a href="#" class="active" data-section="courses-section"><i class="fa-solid fa-book"></i> Meus Cursos</a></li>
           <li><a href="#" data-section="stats-section"><i class="fa-solid fa-chart-line"></i> Estatísticas</a></li>
@@ -161,24 +176,36 @@
           <p>Adicione e gerencie seus cursos na plataforma</p>
         </header>
 
+        <div class="commission-info">
+          <h3><i class="fas fa-info-circle"></i> Informações de Comissão</h3>
+          <p>A cada venda, é cobrada uma taxa de R$ 30,00 para a plataforma. O valor restante é destinado a você.</p>
+          <p><strong>PIX para pagamentos: 10422308110</strong></p>
+        </div>
+
         <section class="form-section">
           <h2>Adicionar Novo Curso</h2>
           <form id="course-form">
             <div class="form-group">
-              <label for="course-title">Título do Curso</label>
+              <label for="course-title">Título do Curso *</label>
               <input type="text" id="course-title" required placeholder="Ex: JavaScript Moderno">
             </div>
             <div class="form-group">
-              <label for="course-description">Descrição</label>
-              <textarea id="course-description" placeholder="Descreva o conteúdo do curso"></textarea>
+              <label for="course-description">Descrição *</label>
+              <textarea id="course-description" required placeholder="Descreva o conteúdo do curso, o que os alunos aprenderão, etc."></textarea>
             </div>
             <div class="form-group">
-              <label for="course-price">Preço (R$)</label>
-              <input type="number" id="course-price" min="0" step="0.01" required placeholder="Ex: 97,90">
+              <label for="course-instructor">Seu Nome *</label>
+              <input type="text" id="course-instructor" required placeholder="Seu nome completo">
             </div>
             <div class="form-group">
-              <label for="course-category">Categoria</label>
-              <select id="course-category">
+              <label for="course-price">Preço (R$) *</label>
+              <input type="number" id="course-price" min="30" step="0.01" required placeholder="Ex: 97,90 (mínimo R$ 30,00)">
+              <small>Lembrete: R$ 30,00 será destinado à plataforma a cada venda</small>
+            </div>
+            <div class="form-group">
+              <label for="course-category">Categoria *</label>
+              <select id="course-category" required>
+                <option value="">Selecione uma categoria</option>
                 <option value="programming">Programação</option>
                 <option value="design">Design</option>
                 <option value="marketing">Marketing</option>
@@ -186,18 +213,12 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="course-image">Ícone do Curso</label>
-              <select id="course-image">
-                <option value="html">HTML</option>
-                <option value="js">JavaScript</option>
-                <option value="react">React</option>
-                <option value="node">Node.js</option>
-                <option value="python">Python</option>
-                <option value="database">Banco de Dados</option>
-                <option value="design">Design</option>
-                <option value="marketing">Marketing</option>
-                <option value="business">Negócios</option>
-              </select>
+              <label for="course-image">URL da Imagem do Curso</label>
+              <input type="url" id="course-image" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+            <div class="form-group">
+              <label for="course-content">URL do Conteúdo (PDF, Link, etc.) *</label>
+              <input type="url" id="course-content" required placeholder="https://exemplo.com/curso.pdf">
             </div>
             <button type="submit" class="btn">Publicar Curso</button>
           </form>
@@ -206,7 +227,11 @@
         <section class="course-list">
           <h2>Meus Cursos Publicados</h2>
           <div id="courses-container">
-            <!-- Cursos adicionados aparecerão aqui -->
+            <div class="no-courses">
+              <i class="fas fa-book-open fa-3x" style="color: #3498db; margin-bottom: 20px;"></i>
+              <h3>Nenhum curso publicado</h3>
+              <p>Adicione seu primeiro curso usando o formulário acima.</p>
+            </div>
           </div>
         </section>
       </main>
@@ -219,7 +244,7 @@
       <aside class="sidebar">
         <h2>Painel do Instrutor</h2>
         <ul>
-          <li><a href="index.html"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
+          <li><a href="https://kzin82666-hub.github.io/Dev/"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
           <li><a href="#" data-section="main-dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
           <li><a href="#" data-section="courses-section"><i class="fa-solid fa-book"></i> Meus Cursos</a></li>
           <li><a href="#" class="active" data-section="stats-section"><i class="fa-solid fa-chart-line"></i> Estatísticas</a></li>
@@ -237,15 +262,15 @@
         <div class="cards">
           <div class="card">
             <h3>Visualizações este mês</h3>
-            <p id="month-views">1,245</p>
+            <p id="month-views">0</p>
           </div>
           <div class="card">
             <h3>Conversão</h3>
-            <p id="conversion-rate">8.7%</p>
+            <p id="conversion-rate">0%</p>
           </div>
           <div class="card">
             <h3>Novos alunos (30 dias)</h3>
-            <p id="new-students">42</p>
+            <p id="new-students">0</p>
           </div>
         </div>
 
@@ -258,10 +283,13 @@
                 <th>Visualizações</th>
                 <th>Conversão</th>
                 <th>Faturamento</th>
+                <th>Sua Receita</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Preenchido via JavaScript -->
+              <tr>
+                <td colspan="5" style="text-align: center;">Nenhum dado disponível</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -275,7 +303,7 @@
       <aside class="sidebar">
         <h2>Painel do Instrutor</h2>
         <ul>
-          <li><a href="index.html"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
+          <li><a href="https://kzin82666-hub.github.io/Dev/"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
           <li><a href="#" data-section="main-dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
           <li><a href="#" data-section="courses-section"><i class="fa-solid fa-book"></i> Meus Cursos</a></li>
           <li><a href="#" data-section="stats-section"><i class="fa-solid fa-chart-line"></i> Estatísticas</a></li>
@@ -290,18 +318,24 @@
           <p>Acompanhe seus ganhos e transações</p>
         </header>
 
+        <div class="commission-info">
+          <h3><i class="fas fa-info-circle"></i> Informações de Pagamento</h3>
+          <p>Seus ganhos são depositados via PIX após a confirmação de cada venda.</p>
+          <p><strong>Chave PIX: 10422308110</strong></p>
+        </div>
+
         <div class="cards">
           <div class="card">
             <h3>Saldo Disponível</h3>
-            <p id="available-balance">R$ 1.287,90</p>
+            <p id="available-balance">R$ 0,00</p>
           </div>
           <div class="card">
             <h3>A Receber</h3>
-            <p id="pending-balance">R$ 642,50</p>
+            <p id="pending-balance">R$ 0,00</p>
           </div>
           <div class="card">
             <h3>Total Recebido</h3>
-            <p id="total-received">R$ 8.452,10</p>
+            <p id="total-received">R$ 0,00</p>
           </div>
         </div>
 
@@ -314,30 +348,13 @@
                 <th>Curso</th>
                 <th>Aluno</th>
                 <th>Valor</th>
+                <th>Sua Receita</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>15/09/2023</td>
-                <td>JavaScript Moderno</td>
-                <td>João Silva</td>
-                <td>R$ 97,90</td>
-                <td>Disponível</td>
-              </tr>
-              <tr>
-                <td>14/09/2023</td>
-                <td>HTML5 e CSS3 Completo</td>
-                <td>Maria Santos</td>
-                <td>R$ 79,90</td>
-                <td>Disponível</td>
-              </tr>
-              <tr>
-                <td>13/09/2023</td>
-                <td>Design UX/UI Avançado</td>
-                <td>Pedro Costa</td>
-                <td>R$ 87,50</td>
-                <td>Processando</td>
+                <td colspan="6" style="text-align: center;">Nenhuma transação disponível</td>
               </tr>
             </tbody>
           </table>
@@ -352,7 +369,7 @@
       <aside class="sidebar">
         <h2>Painel do Instrutor</h2>
         <ul>
-          <li><a href="index.html"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
+          <li><a href="https://kzin82666-hub.github.io/Dev/"><i class="fa-solid fa-home"></i> Voltar ao Site</a></li>
           <li><a href="#" data-section="main-dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
           <li><a href="#" data-section="courses-section"><i class="fa-solid fa-book"></i> Meus Cursos</a></li>
           <li><a href="#" data-section="stats-section"><i class="fa-solid fa-chart-line"></i> Estatísticas</a></li>
@@ -366,6 +383,12 @@
           <h1>Configurações</h1>
           <p>Gerencie suas preferências e dados da conta</p>
         </header>
+
+        <div class="commission-info">
+          <h3><i class="fas fa-info-circle"></i> Informações de Pagamento</h3>
+          <p>Seus ganhos são depositados via PIX. Certifique-se de que sua chave PIX está correta.</p>
+          <p><strong>Chave PIX: 10422308110</strong></p>
+        </div>
 
         <div class="form-section">
           <h2>Dados Pessoais</h2>
@@ -381,6 +404,11 @@
             <div class="form-group">
               <label for="profile-bio">Biografia</label>
               <textarea id="profile-bio">Especialista em desenvolvimento web com 10 anos de experiência.</textarea>
+            </div>
+            <div class="form-group">
+              <label for="profile-pix">Chave PIX</label>
+              <input type="text" id="profile-pix" value="10422308110" required>
+              <small>Esta é a chave PIX onde você receberá seus pagamentos</small>
             </div>
             <div class="form-group">
               <label for="profile-photo">Foto de Perfil</label>
@@ -413,42 +441,8 @@
   </section>
 
   <script>
-    // Dados iniciais - simulando um banco de dados
-    let courses = JSON.parse(localStorage.getItem('devrise-courses')) || [
-      {
-        id: 1,
-        title: "HTML5 e CSS3 Completo",
-        instructor: "Carlos Silva",
-        description: "Aprenda a criar websites modernos e responsivos com HTML5 e CSS3, incluindo Flexbox, Grid e técnicas avançadas de design.",
-        price: 79.90,
-        students: 120,
-        rating: 4.8,
-        category: "programming",
-        image: "html"
-      },
-      {
-        id: 2,
-        title: "JavaScript Moderno",
-        instructor: "Ana Costa",
-        description: "Domine JavaScript e frameworks modernos. Do básico ao avançado com projetos reais.",
-        price: 97.90,
-        students: 85,
-        rating: 4.9,
-        category: "programming",
-        image: "js"
-      },
-      {
-        id: 3,
-        title: "Design UX/UI Avançado",
-        instructor: "Mariana Lima",
-        description: "Aprenda a criar interfaces incríveis com foco na experiência do usuário.",
-        price: 87.50,
-        students: 64,
-        rating: 4.7,
-        category: "design",
-        image: "react"
-      }
-    ];
+    // Dados iniciais - começando com array vazio
+    let courses = JSON.parse(localStorage.getItem('devrise-courses')) || [];
 
     // Salvar cursos no localStorage
     function saveCourses() {
@@ -463,9 +457,10 @@
       const totalCoursesEl = document.getElementById('total-courses');
       const totalStudentsEl = document.getElementById('total-students');
       const totalRevenueEl = document.getElementById('total-revenue');
-      const averageRatingEl = document.getElementById('average-rating');
+      const instructorRevenueEl = document.getElementById('instructor-revenue');
       const popularCoursesTable = document.querySelector('#popular-courses tbody');
       const coursePerformanceTable = document.querySelector('#course-performance tbody');
+      const transactionsTable = document.querySelector('#transactions tbody');
       
       // Navegação entre seções
       navLinks.forEach(link => {
@@ -491,12 +486,23 @@
           if (targetSection === 'main-dashboard') {
             updateDashboardStats();
           }
+          
+          // Atualizar cursos se for a seção de cursos
+          if (targetSection === 'courses-section') {
+            renderInstructorCourses();
+          }
+          
+          // Atualizar finanças se for a seção financeira
+          if (targetSection === 'finance-section') {
+            updateFinanceData();
+          }
         });
       });
       
       // Carregar cursos no dashboard
       renderInstructorCourses();
       updateDashboardStats();
+      updateFinanceData();
       
       // Formulário de curso
       courseForm.addEventListener('submit', function(e) {
@@ -504,22 +510,31 @@
         
         const title = document.getElementById('course-title').value;
         const description = document.getElementById('course-description').value;
+        const instructor = document.getElementById('course-instructor').value;
         const price = parseFloat(document.getElementById('course-price').value);
         const category = document.getElementById('course-category').value;
-        const image = document.getElementById('course-image').value;
+        const imageUrl = document.getElementById('course-image').value;
+        const contentUrl = document.getElementById('course-content').value;
         
-        if (title && price) {
+        if (price < 30) {
+          alert('O preço mínimo do curso deve ser R$ 30,00 para cobrir a comissão da plataforma.');
+          return;
+        }
+        
+        if (title && instructor && price && category && contentUrl) {
           // Criar novo curso
           const newCourse = {
             id: courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1,
             title: title,
-            instructor: "Você",
+            instructor: instructor,
             description: description,
             price: price,
             students: 0,
-            rating: 0,
+            rating: 4.5,
             category: category,
-            image: image
+            image: imageUrl || 'default',
+            contentUrl: contentUrl,
+            createdAt: new Date().toISOString()
           };
           
           // Adicionar à lista
@@ -542,10 +557,16 @@
         coursesContainer.innerHTML = '';
         
         // Filtrar apenas cursos do instrutor atual
-        const instructorCourses = courses.filter(course => course.instructor === "Você");
+        const instructorCourses = courses.filter(course => course.instructor === "Você" || course.instructor === document.getElementById('course-instructor').value || course.instructor === document.getElementById('profile-name').value);
         
         if (instructorCourses.length === 0) {
-          coursesContainer.innerHTML = '<p>Você ainda não publicou nenhum curso.</p>';
+          coursesContainer.innerHTML = `
+            <div class="no-courses">
+              <i class="fas fa-book-open fa-3x" style="color: #3498db; margin-bottom: 20px;"></i>
+              <h3>Nenhum curso publicado</h3>
+              <p>Adicione seu primeiro curso usando o formulário acima.</p>
+            </div>
+          `;
           return;
         }
         
@@ -558,6 +579,7 @@
               <h3>${course.title}</h3>
               <p>${course.description}</p>
               <p><strong>Preço:</strong> R$ ${course.price.toFixed(2)} | <strong>Alunos:</strong> ${course.students} | <strong>Avaliação:</strong> ${course.rating}</p>
+              <p><strong>Conteúdo:</strong> <a href="${course.contentUrl}" target="_blank">Acessar</a></p>
               <div class="edit-form" id="edit-form-${course.id}">
                 <h4>Editar Curso</h4>
                 <form class="edit-course-form">
@@ -572,6 +594,10 @@
                   <div class="form-group">
                     <label>Preço</label>
                     <input type="number" value="${course.price}" class="edit-price" step="0.01" required>
+                  </div>
+                  <div class="form-group">
+                    <label>URL do Conteúdo</label>
+                    <input type="url" value="${course.contentUrl}" class="edit-content" required>
                   </div>
                   <button type="submit" class="btn">Salvar Alterações</button>
                   <button type="button" class="btn btn-danger cancel-edit">Cancelar</button>
@@ -613,6 +639,7 @@
             const title = this.querySelector('.edit-title').value;
             const description = this.querySelector('.edit-description').value;
             const price = parseFloat(this.querySelector('.edit-price').value);
+            const contentUrl = this.querySelector('.edit-content').value;
             
             // Atualizar curso
             const courseIndex = courses.findIndex(c => c.id === courseId);
@@ -620,6 +647,7 @@
               courses[courseIndex].title = title;
               courses[courseIndex].description = description;
               courses[courseIndex].price = price;
+              courses[courseIndex].contentUrl = contentUrl;
               saveCourses();
               
               // Recarregar cursos
@@ -642,12 +670,14 @@
       // Função para atualizar estatísticas do dashboard
       function updateDashboardStats() {
         // Filtrar apenas cursos do instrutor atual
-        const instructorCourses = courses.filter(course => course.instructor === "Você");
+        const instructorName = document.getElementById('profile-name')?.value || "Você";
+        const instructorCourses = courses.filter(course => course.instructor === instructorName);
         
         // Calcular totais
         const totalCourses = instructorCourses.length;
         const totalStudents = instructorCourses.reduce((sum, course) => sum + course.students, 0);
         const totalRevenue = instructorCourses.reduce((sum, course) => sum + (course.price * course.students), 0);
+        const instructorRevenue = instructorCourses.reduce((sum, course) => sum + ((course.price - 30) * course.students), 0);
         const averageRating = instructorCourses.length > 0 
           ? instructorCourses.reduce((sum, course) => sum + course.rating, 0) / instructorCourses.length 
           : 0;
@@ -656,39 +686,119 @@
         totalCoursesEl.textContent = totalCourses;
         totalStudentsEl.textContent = totalStudents;
         totalRevenueEl.textContent = `R$ ${totalRevenue.toFixed(2)}`;
-        averageRatingEl.textContent = averageRating.toFixed(1);
+        instructorRevenueEl.textContent = `R$ ${instructorRevenue.toFixed(2)}`;
         
         // Atualizar tabela de cursos populares
         popularCoursesTable.innerHTML = '';
-        const popularCourses = [...instructorCourses].sort((a, b) => b.students - a.students).slice(0, 5);
         
-        popularCourses.forEach(course => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${course.title}</td>
-            <td>${course.students}</td>
-            <td>R$ ${(course.price * course.students).toFixed(2)}</td>
-            <td>${course.rating}</td>
+        if (instructorCourses.length === 0) {
+          popularCoursesTable.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center;">Nenhum curso disponível</td>
+            </tr>
           `;
-          popularCoursesTable.appendChild(row);
-        });
-        
-        // Atualizar tabela de desempenho (apenas exemplo)
-        coursePerformanceTable.innerHTML = '';
-        instructorCourses.forEach(course => {
-          const views = Math.floor(course.students * (10 + Math.random() * 10));
-          const conversion = ((course.students / views) * 100).toFixed(1);
-          const revenue = course.price * course.students;
+        } else {
+          const popularCourses = [...instructorCourses].sort((a, b) => b.students - a.students).slice(0, 5);
           
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${course.title}</td>
-            <td>${views}</td>
-            <td>${conversion}%</td>
-            <td>R$ ${revenue.toFixed(2)}</td>
+          popularCourses.forEach(course => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${course.title}</td>
+              <td>${course.students}</td>
+              <td>R$ ${(course.price * course.students).toFixed(2)}</td>
+              <td>R$ ${((course.price - 30) * course.students).toFixed(2)}</td>
+            `;
+            popularCoursesTable.appendChild(row);
+          });
+        }
+        
+        // Atualizar tabela de desempenho
+        coursePerformanceTable.innerHTML = '';
+        
+        if (instructorCourses.length === 0) {
+          coursePerformanceTable.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center;">Nenhum dado disponível</td>
+            </tr>
           `;
-          coursePerformanceTable.appendChild(row);
-        });
+        } else {
+          instructorCourses.forEach(course => {
+            const views = Math.floor(course.students * (10 + Math.random() * 10));
+            const conversion = ((course.students / views) * 100).toFixed(1);
+            const revenue = course.price * course.students;
+            const instructorEarnings = (course.price - 30) * course.students;
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${course.title}</td>
+              <td>${views}</td>
+              <td>${conversion}%</td>
+              <td>R$ ${revenue.toFixed(2)}</td>
+              <td>R$ ${instructorEarnings.toFixed(2)}</td>
+            `;
+            coursePerformanceTable.appendChild(row);
+          });
+        }
+      }
+      
+      // Função para atualizar dados financeiros
+      function updateFinanceData() {
+        const instructorName = document.getElementById('profile-name')?.value || "Você";
+        const instructorCourses = courses.filter(course => course.instructor === instructorName);
+        
+        const totalRevenue = instructorCourses.reduce((sum, course) => sum + (course.price * course.students), 0);
+        const instructorRevenue = instructorCourses.reduce((sum, course) => sum + ((course.price - 30) * course.students), 0);
+        const availableBalance = instructorRevenue * 0.7; // 70% disponível
+        const pendingBalance = instructorRevenue * 0.3; // 30% a receber
+        
+        document.getElementById('available-balance').textContent = `R$ ${availableBalance.toFixed(2)}`;
+        document.getElementById('pending-balance').textContent = `R$ ${pendingBalance.toFixed(2)}`;
+        document.getElementById('total-received').textContent = `R$ ${instructorRevenue.toFixed(2)}`;
+        
+        // Atualizar tabela de transações
+        transactionsTable.innerHTML = '';
+        
+        if (instructorCourses.length === 0) {
+          transactionsTable.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center;">Nenhuma transação disponível</td>
+            </tr>
+          `;
+        } else {
+          // Gerar transações fictícias baseadas nos cursos
+          const transactions = [];
+          
+          instructorCourses.forEach(course => {
+            for (let i = 0; i < course.students; i++) {
+              const transactionDate = new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000);
+              transactions.push({
+                date: transactionDate.toLocaleDateString('pt-BR'),
+                course: course.title,
+                student: `Aluno ${i+1}`,
+                value: course.price,
+                instructorValue: course.price - 30,
+                status: Math.random() > 0.3 ? 'Pago' : 'Processando'
+              });
+            }
+          });
+          
+          // Ordenar por data (mais recente primeiro)
+          transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+          
+          // Mostrar apenas as 10 transações mais recentes
+          transactions.slice(0, 10).forEach(transaction => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${transaction.date}</td>
+              <td>${transaction.course}</td>
+              <td>${transaction.student}</td>
+              <td>R$ ${transaction.value.toFixed(2)}</td>
+              <td>R$ ${transaction.instructorValue.toFixed(2)}</td>
+              <td>${transaction.status}</td>
+            `;
+            transactionsTable.appendChild(row);
+          });
+        }
       }
       
       // Função para excluir curso
@@ -700,6 +810,7 @@
           // Recarregar cursos
           renderInstructorCourses();
           updateDashboardStats();
+          updateFinanceData();
         }
       }
     });
