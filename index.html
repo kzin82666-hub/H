@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Vendas - DevRise</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -467,6 +468,7 @@
             margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
+            position: relative;
         }
         
         .modal-header h2 {
@@ -482,6 +484,9 @@
             cursor: pointer;
             color: var(--text-light);
             transition: color 0.3s ease;
+            position: absolute;
+            top: 0;
+            right: 0;
         }
         
         .close-btn:hover {
@@ -587,6 +592,29 @@
             line-height: 1.6;
         }
         
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        
+        .empty-state p {
+            margin-bottom: 20px;
+        }
+        
         /* Responsive Design */
         @media (max-width: 1200px) {
             .dashboard {
@@ -648,13 +676,7 @@
                 </a>
                 <ul class="nav-links">
                     <li><a href="index.html">Início</a></li>
-                    <li><a href="cursos.html">Cursos</a></li>
-                    <li><a href="instrutores.html">Para Instrutores</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="contato.html">Contato</a></li>
-                    <li><a href="vendas.html" class="active">Vendas</a></li>
-                    <li><a href="https://kzin82666-hub.github.io/Deep/" target="_blank">Deep</a></li>
-                    <li><a href="https://github.com/kzin82666-hub/Dev" target="_blank">GitHub Repo</a></li>
+                    <li><a href="dashboard.html" class="active">Dashboard</a></li>
                 </ul>
                 <div class="user-actions">
                     <div class="user-info">
@@ -692,8 +714,8 @@
             <div class="main-content">
                 <div class="dashboard-header">
                     <h1>Dashboard de Vendas</h1>
-                    <button class="btn btn-primary" onclick="openSaleModal()">
-                        <i class="fas fa-plus"></i> Nova Venda
+                    <button class="btn btn-primary" onclick="openCourseModal()">
+                        <i class="fas fa-plus"></i> Adicionar Curso
                     </button>
                 </div>
 
@@ -744,9 +766,6 @@
                 <div class="content-section animated">
                     <div class="section-header">
                         <h2>Vendas Recentes</h2>
-                        <button class="btn btn-primary" onclick="openSaleModal()">
-                            <i class="fas fa-plus"></i> Adicionar Venda
-                        </button>
                     </div>
                     <div class="table-responsive">
                         <table id="sales-table">
@@ -759,13 +778,17 @@
                                     <th>Comissão (30%)</th>
                                     <th>Data</th>
                                     <th>Status</th>
-                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- Conteúdo dinâmico será inserido aqui -->
                             </tbody>
                         </table>
+                    </div>
+                    <div id="sales-empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Nenhuma venda encontrada</h3>
+                        <p>Quando houver vendas, elas aparecerão aqui.</p>
                     </div>
                 </div>
 
@@ -793,6 +816,11 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="courses-empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-book"></i>
+                        <h3>Nenhum curso cadastrado</h3>
+                        <p>Clique no botão acima para adicionar seu primeiro curso.</p>
+                    </div>
                 </div>
 
                 <!-- PIX Info Section -->
@@ -816,18 +844,18 @@
                         <h2><i class="fas fa-question-circle"></i> Como usar o Dashboard</h2>
                         
                         <div class="help-item">
-                            <h3>Adicionar uma nova venda</h3>
-                            <p>Clique no botão "Nova Venda" no topo da página, preencha os dados do cliente, selecione o curso e confirme. O sistema calculará automaticamente sua comissão de 30%.</p>
+                            <h3>Adicionar um novo curso</h3>
+                            <p>Clique no botão "Adicionar Curso" no topo da página, preencha os dados do curso e salve. O curso ficará imediatamente disponível na página principal.</p>
                         </div>
                         
                         <div class="help-item">
                             <h3>Gerenciar cursos</h3>
-                            <p>Na seção "Cursos Disponíveis", você pode adicionar novos cursos ou editar os existentes. Cada curso deve ter um nome, categoria e preço definidos.</p>
+                            <p>Na seção "Cursos Disponíveis", você pode editar ou excluir cursos existentes. Cada curso deve ter um nome, categoria e preço definidos.</p>
                         </div>
                         
                         <div class="help-item">
                             <h3>Recebimento por PIX</h3>
-                            <p>Todos os pagamentos devem ser enviados para a chave PIX: <strong>10422308110</strong>. Após a confirmação do pagamento, altere o status da venda para "Concluída".</p>
+                            <p>Todos os pagamentos devem ser enviados para a chave PIX: <strong>10422308110</strong>. As vendas são automaticamente registradas no sistema.</p>
                         </div>
                         
                         <div class="help-item">
@@ -840,63 +868,15 @@
         </div>
     </div>
 
-    <!-- Modal for Adding Sale -->
-    <div class="modal" id="saleModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Registrar Nova Venda</h2>
-                <button class="close-btn" onclick="closeModal('saleModal')">&times;</button>
-            </div>
-            <form id="sale-form">
-                <div class="form-group">
-                    <label for="saleCustomer">Cliente</label>
-                    <input type="text" id="saleCustomer" class="form-control" placeholder="Nome do cliente" required>
-                </div>
-                <div class="form-group">
-                    <label for="saleEmail">E-mail</label>
-                    <input type="email" id="saleEmail" class="form-control" placeholder="E-mail do cliente" required>
-                </div>
-                <div class="form-group">
-                    <label for="saleCourse">Curso</label>
-                    <select id="saleCourse" class="form-control" required>
-                        <option value="">Selecione um curso</option>
-                        <!-- Cursos serão carregados dinamicamente -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="salePrice">Valor (R$)</label>
-                    <input type="number" id="salePrice" class="form-control" placeholder="Valor da venda" step="0.01" required readonly>
-                </div>
-                <div class="form-group">
-                    <label for="saleDate">Data</label>
-                    <input type="date" id="saleDate" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="saleStatus">Status</label>
-                    <select id="saleStatus" class="form-control" required>
-                        <option value="completed">Concluída</option>
-                        <option value="pending">Pendente</option>
-                    </select>
-                </div>
-                <div class="pix-info">
-                    <h3><i class="fas fa-info-circle"></i> Informações de Comissão</h3>
-                    <p>Valor do curso: <span id="course-full-price">R$ 0,00</span></p>
-                    <p>Sua comissão (30%): <span id="commission-amount">R$ 0,00</span></p>
-                    <p>Chave PIX: <strong>10422308110</strong></p>
-                </div>
-                <button type="submit" class="btn btn-primary">Registrar Venda</button>
-            </form>
-        </div>
-    </div>
-
     <!-- Modal for Adding Course -->
     <div class="modal" id="courseModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Adicionar Novo Curso</h2>
+                <h2 id="course-modal-title">Adicionar Novo Curso</h2>
                 <button class="close-btn" onclick="closeModal('courseModal')">&times;</button>
             </div>
             <form id="course-form">
+                <input type="hidden" id="courseId" value="">
                 <div class="form-group">
                     <label for="courseName">Nome do Curso</label>
                     <input type="text" id="courseName" class="form-control" placeholder="Nome do curso" required>
@@ -934,36 +914,18 @@
 
     <script>
         // Banco de dados simulado usando localStorage
-        let sales = JSON.parse(localStorage.getItem('devrise_sales')) || [];
         let courses = JSON.parse(localStorage.getItem('devrise_courses')) || [];
-        let customers = JSON.parse(localStorage.getItem('devrise_customers')) || [];
+        let sales = JSON.parse(localStorage.getItem('devrise_sales')) || [];
+        let editingCourseId = null;
         
         // Inicializar a dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            // Adicionar alguns cursos de exemplo se não existirem
-            if (courses.length === 0) {
-                courses = [
-                    { id: 1, name: "Desenvolvimento Web Completo", category: "Programação", price: 497.00, description: "Aprenda a criar sites e aplicações web do zero" },
-                    { id: 2, name: "UX/UI Design Avançado", category: "Design", price: 447.00, description: "Domine as técnicas de design de interface" },
-                    { id: 3, name: "Marketing Digital", category: "Marketing", price: 297.00, description: "Estratégias de marketing digital" }
-                ];
-                localStorage.setItem('devrise_courses', JSON.stringify(courses));
-            }
-            
             updateDashboard();
             renderSalesTable();
             renderCoursesTable();
-            populateCourseDropdown();
             
-            // Configurar os formulários
-            document.getElementById('sale-form').addEventListener('submit', handleSaleSubmit);
+            // Configurar o formulário de curso
             document.getElementById('course-form').addEventListener('submit', handleCourseSubmit);
-            
-            // Atualizar preço quando o curso selecionado mudar
-            document.getElementById('saleCourse').addEventListener('change', updateSalePrice);
-            
-            // Definir data atual como padrão
-            document.getElementById('saleDate').valueAsDate = new Date();
         });
         
         // Atualizar o dashboard
@@ -992,6 +954,14 @@
             const tableBody = document.querySelector('#sales-table tbody');
             tableBody.innerHTML = '';
             
+            // Mostrar estado vazio se não houver vendas
+            if (sales.length === 0) {
+                document.getElementById('sales-empty-state').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('sales-empty-state').style.display = 'none';
+            }
+            
             // Ordenar vendas por data (mais recente primeiro)
             const sortedSales = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date));
             
@@ -1008,10 +978,6 @@
                     <td>R$ ${commission.toFixed(2)}</td>
                     <td>${formatDate(sale.date)}</td>
                     <td><span class="status ${sale.status}">${sale.status === 'completed' ? 'Concluída' : 'Pendente'}</span></td>
-                    <td class="actions">
-                        <div class="action-btn edit-btn" onclick="editSale(${sale.id})"><i class="fas fa-edit"></i></div>
-                        <div class="action-btn delete-btn" onclick="deleteSale(${sale.id})"><i class="fas fa-trash"></i></div>
-                    </td>
                 `;
                 
                 tableBody.appendChild(row);
@@ -1022,6 +988,14 @@
         function renderCoursesTable() {
             const tableBody = document.querySelector('#courses-table tbody');
             tableBody.innerHTML = '';
+            
+            // Mostrar estado vazio se não houver cursos
+            if (courses.length === 0) {
+                document.getElementById('courses-empty-state').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('courses-empty-state').style.display = 'none';
+            }
             
             courses.forEach(course => {
                 // Contar vendas para este curso
@@ -1044,110 +1018,50 @@
             });
         }
         
-        // Popular dropdown de cursos
-        function populateCourseDropdown() {
-            const dropdown = document.getElementById('saleCourse');
-            dropdown.innerHTML = '<option value="">Selecione um curso</option>';
-            
-            courses.forEach(course => {
-                const option = document.createElement('option');
-                option.value = course.id;
-                option.textContent = `${course.name} - R$ ${course.price.toFixed(2)}`;
-                option.setAttribute('data-price', course.price);
-                dropdown.appendChild(option);
-            });
-        }
-        
-        // Atualizar preço quando o curso for selecionado
-        function updateSalePrice() {
-            const courseId = this.value;
-            if (courseId) {
-                const selectedOption = this.options[this.selectedIndex];
-                const price = parseFloat(selectedOption.getAttribute('data-price'));
-                document.getElementById('salePrice').value = price;
-                
-                // Calcular e exibir a comissão (30%)
-                const commission = price * 0.3;
-                document.getElementById('course-full-price').textContent = `R$ ${price.toFixed(2)}`;
-                document.getElementById('commission-amount').textContent = `R$ ${commission.toFixed(2)}`;
-            } else {
-                document.getElementById('salePrice').value = '';
-                document.getElementById('course-full-price').textContent = 'R$ 0,00';
-                document.getElementById('commission-amount').textContent = 'R$ 0,00';
-            }
-        }
-        
-        // Manipular envio do formulário de venda
-        function handleSaleSubmit(e) {
-            e.preventDefault();
-            
-            const saleId = sales.length > 0 ? Math.max(...sales.map(s => s.id)) + 1 : 1;
-            const customer = document.getElementById('saleCustomer').value;
-            const email = document.getElementById('saleEmail').value;
-            const courseId = parseInt(document.getElementById('saleCourse').value);
-            const price = parseFloat(document.getElementById('salePrice').value);
-            const date = document.getElementById('saleDate').value;
-            const status = document.getElementById('saleStatus').value;
-            
-            // Obter nome do curso
-            const course = courses.find(c => c.id === courseId);
-            const courseName = course ? course.name : 'Curso não encontrado';
-            
-            const newSale = {
-                id: saleId,
-                customer: customer,
-                email: email,
-                courseId: courseId,
-                courseName: courseName,
-                price: price,
-                date: date,
-                status: status
-            };
-            
-            sales.push(newSale);
-            localStorage.setItem('devrise_sales', JSON.stringify(sales));
-            
-            closeModal('saleModal');
-            document.getElementById('sale-form').reset();
-            document.getElementById('saleDate').valueAsDate = new Date();
-            
-            updateDashboard();
-            renderSalesTable();
-            
-            // Mostrar mensagem de sucesso
-            alert('Venda registrada com sucesso!');
-        }
-        
         // Manipular envio do formulário de curso
         function handleCourseSubmit(e) {
             e.preventDefault();
             
-            const courseId = courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1;
             const name = document.getElementById('courseName').value;
             const category = document.getElementById('courseCategory').value;
             const price = parseFloat(document.getElementById('coursePrice').value);
             const description = document.getElementById('courseDescription').value;
             
-            const newCourse = {
-                id: courseId,
-                name: name,
-                category: category,
-                price: price,
-                description: description
-            };
+            if (editingCourseId) {
+                // Editar curso existente
+                const courseIndex = courses.findIndex(c => c.id === editingCourseId);
+                if (courseIndex !== -1) {
+                    courses[courseIndex] = {
+                        ...courses[courseIndex],
+                        name: name,
+                        category: category,
+                        price: price,
+                        description: description
+                    };
+                }
+            } else {
+                // Adicionar novo curso
+                const courseId = courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1;
+                
+                const newCourse = {
+                    id: courseId,
+                    name: name,
+                    category: category,
+                    price: price,
+                    description: description
+                };
+                
+                courses.push(newCourse);
+            }
             
-            courses.push(newCourse);
             localStorage.setItem('devrise_courses', JSON.stringify(courses));
             
             closeModal('courseModal');
             document.getElementById('course-form').reset();
+            editingCourseId = null;
             
             updateDashboard();
             renderCoursesTable();
-            populateCourseDropdown();
-            
-            // Mostrar mensagem de sucesso
-            alert('Curso adicionado com sucesso!');
         }
         
         // Funções auxiliares
@@ -1156,11 +1070,10 @@
             return new Date(dateString).toLocaleDateString('pt-BR', options);
         }
         
-        function openSaleModal() {
-            document.getElementById('saleModal').style.display = 'flex';
-        }
-        
         function openCourseModal() {
+            document.getElementById('course-modal-title').textContent = 'Adicionar Novo Curso';
+            document.getElementById('course-form').reset();
+            editingCourseId = null;
             document.getElementById('courseModal').style.display = 'flex';
         }
         
@@ -1176,63 +1089,35 @@
         }
         
         // Funções de edição e exclusão
-        function editSale(saleId) {
-            const sale = sales.find(s => s.id === saleId);
-            if (sale) {
-                document.getElementById('saleCustomer').value = sale.customer;
-                document.getElementById('saleEmail').value = sale.email;
-                document.getElementById('saleCourse').value = sale.courseId;
-                document.getElementById('salePrice').value = sale.price;
-                document.getElementById('saleDate').value = sale.date;
-                document.getElementById('saleStatus').value = sale.status;
-                
-                // Atualizar informações de comissão
-                const commission = sale.price * 0.3;
-                document.getElementById('course-full-price').textContent = `R$ ${sale.price.toFixed(2)}`;
-                document.getElementById('commission-amount').textContent = `R$ ${commission.toFixed(2)}`;
-                
-                openSaleModal();
-                
-                // Remover a venda antiga após edição
-                sales = sales.filter(s => s.id !== saleId);
-                localStorage.setItem('devrise_sales', JSON.stringify(sales));
-            }
-        }
-        
-        function deleteSale(saleId) {
-            if (confirm('Tem certeza que deseja excluir esta venda?')) {
-                sales = sales.filter(s => s.id !== saleId);
-                localStorage.setItem('devrise_sales', JSON.stringify(sales));
-                updateDashboard();
-                renderSalesTable();
-                alert('Venda excluída com sucesso!');
-            }
-        }
-        
         function editCourse(courseId) {
             const course = courses.find(c => c.id === courseId);
             if (course) {
+                document.getElementById('course-modal-title').textContent = 'Editar Curso';
+                document.getElementById('courseId').value = course.id;
                 document.getElementById('courseName').value = course.name;
                 document.getElementById('courseCategory').value = course.category;
                 document.getElementById('coursePrice').value = course.price;
                 document.getElementById('courseDescription').value = course.description || '';
                 
-                openCourseModal();
-                
-                // Remover o curso antigo após edição
-                courses = courses.filter(c => c.id !== courseId);
-                localStorage.setItem('devrise_courses', JSON.stringify(courses));
+                editingCourseId = courseId;
+                document.getElementById('courseModal').style.display = 'flex';
             }
         }
         
         function deleteCourse(courseId) {
             if (confirm('Tem certeza que deseja excluir este curso?')) {
+                // Verificar se há vendas associadas a este curso
+                const hasSales = sales.some(sale => sale.courseId === courseId);
+                
+                if (hasSales) {
+                    alert('Não é possível excluir este curso pois existem vendas associadas a ele.');
+                    return;
+                }
+                
                 courses = courses.filter(c => c.id !== courseId);
                 localStorage.setItem('devrise_courses', JSON.stringify(courses));
                 updateDashboard();
                 renderCoursesTable();
-                populateCourseDropdown();
-                alert('Curso excluído com sucesso!');
             }
         }
     </script>
